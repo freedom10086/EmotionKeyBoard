@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/comment_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_above="@+id/smiley_view"
+    android:background="#FAFAFA"
+    android:gravity="bottom"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <EditText
+        android:id="@+id/ed_comment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@null"
+        android:hint="我也来说两句"
+        android:inputType="textMultiLine"
+        android:maxLines="4"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/btn_first"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:clickable="true"
+        android:src="@drawable/post_collect" />
+
+    <ImageView
+        android:id="@+id/btn_second"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:clickable="true"
+        android:src="@drawable/post_comment_btn" />
+</LinearLayout>

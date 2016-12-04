@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<me.yluo.testkeyboard.keboard.RootViewGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0"
+        android:background="@color/chatting_list_bg" />
+
+    <include layout="@layout/input_bar" />
+
+
+    <me.yluo.testkeyboard.keboard.PanelViewGroup
+        android:id="@+id/panel_root"
+        style="@style/Panel"
+        android:visibility="gone">
+
+        <me.yluo.testkeyboard.keboard.SmileyView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </me.yluo.testkeyboard.keboard.PanelViewGroup>
+
+</me.yluo.testkeyboard.keboard.RootViewGroup>
