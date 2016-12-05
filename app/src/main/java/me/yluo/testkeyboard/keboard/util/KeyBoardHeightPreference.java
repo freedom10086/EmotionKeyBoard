@@ -7,12 +7,10 @@ import android.content.SharedPreferences;
 /**
  * For save the keyboard height.
  */
-class KeyBoardSharedPreferences {
+class KeyBoardHeightPreference {
 
     private final static String FILE_NAME = "keyboard.common";
-
     private final static String KEY_KEYBOARD_HEIGHT = "sp.key.keyboard.height";
-
     private volatile static SharedPreferences SP;
 
     public static boolean save(final Context context, final int keyboardHeight) {
@@ -23,7 +21,7 @@ class KeyBoardSharedPreferences {
 
     private static SharedPreferences with(final Context context) {
         if (SP == null) {
-            synchronized (KeyBoardSharedPreferences.class) {
+            synchronized (KeyBoardHeightPreference.class) {
                 if (SP == null) {
                     SP = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
                 }

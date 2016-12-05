@@ -15,7 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-import me.yluo.testkeyboard.keboard.PanelViewGroup;
+import me.yluo.testkeyboard.keboard.PanelViewRoot;
 
 public class KeyboardUtil {
 
@@ -62,12 +62,12 @@ public class KeyboardUtil {
         LAST_SAVE_KEYBOARD_HEIGHT = keyboardHeight;
         Log.d("KeyBordUtil", String.format("save keyboard: %d", keyboardHeight));
 
-        return KeyBoardSharedPreferences.save(context, keyboardHeight);
+        return KeyBoardHeightPreference.save(context, keyboardHeight);
     }
 
     public static int getKeyboardHeight(final Context context) {
         if (LAST_SAVE_KEYBOARD_HEIGHT == 0) {
-            LAST_SAVE_KEYBOARD_HEIGHT = KeyBoardSharedPreferences.get(context, DimmenUtils.dip2px(context, 220));
+            LAST_SAVE_KEYBOARD_HEIGHT = KeyBoardHeightPreference.get(context, DimmenUtils.dip2px(context, 220));
         }
         return LAST_SAVE_KEYBOARD_HEIGHT;
     }
@@ -84,11 +84,9 @@ public class KeyboardUtil {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public static ViewTreeObserver.OnGlobalLayoutListener attach(final Activity activity, PanelViewGroup target, OnKeyboardShowingListener listener) {
+    public static ViewTreeObserver.OnGlobalLayoutListener attach(final Activity activity, PanelViewRoot target, OnKeyboardShowingListener listener) {
         final ViewGroup contentView = (ViewGroup) activity.findViewById(android.R.id.content);
-        final boolean isFullScreen = ViewUtil.isFullScreen(activity);
         final boolean isTranslucentStatus = ViewUtil.isTranslucentStatus(activity);
-        final boolean isFitSystemWindows = ViewUtil.isFitsSystemWindows(activity);
 
         // get the screen height.
         final Display display = activity.getWindowManager().getDefaultDisplay();
@@ -96,15 +94,8 @@ public class KeyboardUtil {
         final Point screenSize = new Point();
         display.getSize(screenSize);
         screenHeight = screenSize.y;
-        ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener = new KeyboardStatusListener(
-                isFullScreen,
-                isTranslucentStatus,
-                isFitSystemWindows,
-                contentView,
-                target,
-                listener,
-                screenHeight);
-
+        ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener = new KeyboardStatusListener(isTranslucentStatus,
+                contentView, target, listener, screenHeight);
         contentView.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
         return globalLayoutListener;
     }
@@ -121,10 +112,8 @@ public class KeyboardUtil {
 
         private int previousDisplayHeight = 0;
         private final ViewGroup contentView;
-        private final PanelViewGroup panelHeightTarget;
-        private final boolean isFullScreen;
+        private final PanelViewRoot panelHeightTarget;
         private final boolean isTranslucentStatus;
-        private final boolean isFitSystemWindows;
         private final int statusBarHeight;
         private boolean lastKeyboardShowing;
         private final OnKeyboardShowingListener keyboardShowingListener;
@@ -132,16 +121,12 @@ public class KeyboardUtil {
 
         private boolean isOverlayLayoutDisplayHContainStatusBar = false;
 
-        KeyboardStatusListener(boolean isFullScreen, boolean isTranslucentStatus,
-                               boolean isFitSystemWindows,
-                               ViewGroup contentView, PanelViewGroup panelHeightTarget,
+        KeyboardStatusListener(boolean isTranslucentStatus, ViewGroup contentView, PanelViewRoot panelHeightTarget,
                                OnKeyboardShowingListener listener, int screenHeight) {
             this.contentView = contentView;
             this.panelHeightTarget = panelHeightTarget;
-            this.isFullScreen = isFullScreen;
             this.isTranslucentStatus = isTranslucentStatus;
-            this.isFitSystemWindows = isFitSystemWindows;
-            this.statusBarHeight = StatusBarHeightUtil.getStatusBarHeight(contentView.getContext());
+            this.statusBarHeight = ViewUtil.getStatusBarHeight(contentView.getContext());
             this.keyboardShowingListener = listener;
             this.screenHeight = screenHeight;
         }
@@ -209,19 +194,7 @@ public class KeyboardUtil {
             }
 
             int keyboardHeight;
-            if (KPSwitchConflictUtil.isHandleByPlaceholder(isFullScreen, isTranslucentStatus,
-                    isFitSystemWindows)) {
-                // the height of content parent = contentView.height + actionBar.height
-                final View actionBarOverlayLayout = (View) contentView.getParent();
-
-                keyboardHeight = actionBarOverlayLayout.getHeight() - displayHeight;
-
-                Log.d(TAG, String.format("action bar over layout %d display height: %d",
-                        ((View) contentView.getParent()).getHeight(), displayHeight));
-
-            } else {
-                keyboardHeight = Math.abs(displayHeight - previousDisplayHeight);
-            }
+            keyboardHeight = Math.abs(displayHeight - previousDisplayHeight);
             // no change.
             if (keyboardHeight <= DimmenUtils.dip2px(getContext(), 80)) {
                 return;
@@ -261,33 +234,24 @@ public class KeyboardUtil {
             // NavigationBarHeight.
             final int actionBarOverlayLayoutHeight = actionBarOverlayLayout.getHeight() - actionBarOverlayLayout.getPaddingTop();
 
-            if (KPSwitchConflictUtil.isHandleByPlaceholder(isFullScreen, isTranslucentStatus, isFitSystemWindows)) {
-                if (!isTranslucentStatus && actionBarOverlayLayoutHeight - displayHeight == this.statusBarHeight) {
-                    // handle the case of status bar layout, not keyboard active.
-                    isKeyboardShowing = lastKeyboardShowing;
-                } else {
-                    isKeyboardShowing = actionBarOverlayLayoutHeight > displayHeight;
-                }
-            } else {
-                final int phoneDisplayHeight = contentView.getResources().getDisplayMetrics().heightPixels;
-                if (!isTranslucentStatus && phoneDisplayHeight == actionBarOverlayLayoutHeight) {
-                    // no space to settle down the status bar, switch to fullscreen,
-                    // only in the case of paused and opened the fullscreen page.
-                    Log.w(TAG, String.format("skip the keyboard status calculate, the current" +
-                                    " activity is paused. and phone-display-height %d," +
-                                    " root-height+actionbar-height %d", phoneDisplayHeight,
-                            actionBarOverlayLayoutHeight));
-                    return;
+            final int phoneDisplayHeight = contentView.getResources().getDisplayMetrics().heightPixels;
+            if (!isTranslucentStatus && phoneDisplayHeight == actionBarOverlayLayoutHeight) {
+                // no space to settle down the status bar, switch to fullscreen,
+                // only in the case of paused and opened the fullscreen page.
+                Log.w(TAG, String.format("skip the keyboard status calculate, the current" +
+                                " activity is paused. and phone-display-height %d," +
+                                " root-height+actionbar-height %d", phoneDisplayHeight,
+                        actionBarOverlayLayoutHeight));
+                return;
 
-                }
-                if (maxOverlayLayoutHeight == 0) {
-                    isKeyboardShowing = lastKeyboardShowing;
-                } else {
-                    isKeyboardShowing = displayHeight < maxOverlayLayoutHeight - DimmenUtils.dip2px(getContext(), 80);
-                }
-
-                maxOverlayLayoutHeight = Math.max(maxOverlayLayoutHeight, actionBarOverlayLayoutHeight);
             }
+            if (maxOverlayLayoutHeight == 0) {
+                isKeyboardShowing = lastKeyboardShowing;
+            } else {
+                isKeyboardShowing = displayHeight < maxOverlayLayoutHeight - DimmenUtils.dip2px(getContext(), 80);
+            }
+
+            maxOverlayLayoutHeight = Math.max(maxOverlayLayoutHeight, actionBarOverlayLayoutHeight);
 
             if (lastKeyboardShowing != isKeyboardShowing) {
                 Log.d(TAG, String.format("displayHeight %d actionBarOverlayLayoutHeight %d " +

@@ -1,4 +1,3 @@
-
 package me.yluo.testkeyboard.keboard;
 
 import android.annotation.TargetApi;
@@ -15,41 +14,40 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import me.yluo.testkeyboard.keboard.util.DimmenUtils;
-import me.yluo.testkeyboard.keboard.util.StatusBarHeightUtil;
 import me.yluo.testkeyboard.keboard.util.ViewUtil;
 
 
-public class RootViewGroup extends LinearLayout {
+public class SmileyInputRoot extends LinearLayout {
 
     private int mOldHeight = -1;
     private int mStatusBarHeight;
-    private PanelViewGroup mPanelLayout;
+    private PanelViewRoot mPanelLayout;
     private boolean mIsTranslucentStatus;
     private static final String TAG = "KPSRootLayoutHandler";
 
 
-    public RootViewGroup(Context context) {
+    public SmileyInputRoot(Context context) {
         super(context);
         init();
     }
 
-    public RootViewGroup(Context context, AttributeSet attrs) {
+    public SmileyInputRoot(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public RootViewGroup(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SmileyInputRoot(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
     private void init() {
-        this.mStatusBarHeight = StatusBarHeightUtil.getStatusBarHeight(getContext());
+        this.mStatusBarHeight = ViewUtil.getStatusBarHeight(getContext());
         final Activity activity = (Activity) getContext();
         this.mIsTranslucentStatus = ViewUtil.isTranslucentStatus(activity);
 
-        mPanelLayout = new PanelViewGroup(activity);
+        mPanelLayout = new PanelViewRoot(activity);
         mPanelLayout.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DimmenUtils.dip2px(activity, 200)));
         mPanelLayout.setBackgroundColor(Color.parseColor("#fffefefe"));
         mPanelLayout.setVisibility(GONE);
@@ -70,7 +68,7 @@ public class RootViewGroup extends LinearLayout {
         int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
-            if (!(childView instanceof PanelViewGroup)) {
+            if (!(childView instanceof PanelViewRoot)) {
                 // 获取在onMeasure中计算的视图尺寸
                 int measureHeight = childView.getMeasuredHeight();
                 int measuredWidth = childView.getMeasuredWidth();
@@ -144,7 +142,7 @@ public class RootViewGroup extends LinearLayout {
         }
     }
 
-    public PanelViewGroup getmPanelLayout() {
+    public PanelViewRoot getmPanelLayout() {
         return mPanelLayout;
     }
 }

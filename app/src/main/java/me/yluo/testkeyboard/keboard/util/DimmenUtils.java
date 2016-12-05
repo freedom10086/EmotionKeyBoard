@@ -6,7 +6,6 @@ import android.content.Context;
  * Created by free2 on 16-7-27.
  * 分辨率utils
  */
-
 public class DimmenUtils {
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)

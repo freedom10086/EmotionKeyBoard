@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,7 +31,9 @@ import me.yluo.testkeyboard.keboard.util.DimmenUtils;
 
 
 public class SmileyView extends LinearLayout implements ViewPager.OnPageChangeListener {
+
     private ViewPager viewPager;
+    private EditText inputView;
     private Context context;
     private PageAdapter adapter;
     private int dotImageResourseId;
@@ -62,6 +65,7 @@ public class SmileyView extends LinearLayout implements ViewPager.OnPageChangeLi
         super(context, attrs, defStyleAttr);
         init(context);
     }
+
 
     private void init(Context context) {
         this.context = context;
@@ -124,6 +128,11 @@ public class SmileyView extends LinearLayout implements ViewPager.OnPageChangeLi
             e.printStackTrace();
         }
     }
+
+    public void setInputView(EditText editText) {
+        this.inputView = editText;
+    }
+
 
     public void setSmileys(List<SmileyDataSet> smileys) {
         if (smileys == null) return;
@@ -386,10 +395,12 @@ public class SmileyView extends LinearLayout implements ViewPager.OnPageChangeLi
 
             int realItemHeight = viewPager.getMeasuredHeight() / ROW_COUNT;
             holder.emoticon.setLayoutParams(new LinearLayoutCompat.LayoutParams(LMP, realItemHeight));
-            if (set.isImage()) {
-                Picasso.with(context).load(set.getSmileys().get(pos).second).resize(SIZE_8 * 2, SIZE_8 * 2).into((ImageView) holder.emoticon);
-            } else {
-                ((TextView) holder.emoticon).setText(set.getSmileys().get(pos).second);
+            if (realItemHeight > 0) {
+                if (set.isImage()) {
+                    Picasso.with(context).load(set.getSmileys().get(pos).second).resize(realItemHeight / 2, realItemHeight / 2).into((ImageView) holder.emoticon);
+                } else {
+                    ((TextView) holder.emoticon).setText(set.getSmileys().get(pos).second);
+                }
             }
             return convertView;
         }
