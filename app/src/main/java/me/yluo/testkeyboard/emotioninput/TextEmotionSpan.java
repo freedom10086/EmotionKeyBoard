@@ -1,0 +1,28 @@
+package me.yluo.testkeyboard.emotioninput;
+
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.support.annotation.NonNull;
+import android.text.style.ReplacementSpan;
+
+
+public class TextEmotionSpan extends ReplacementSpan {
+
+    private static final float PADDING = 16.0f;
+
+    @Override
+    public int getSize(@NonNull Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm) {
+        return Math.round(paint.measureText(text, start, end) + PADDING);
+    }
+
+    @Override
+    public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, @NonNull Paint paint) {
+        // Text
+        paint.setAntiAlias(true);
+        paint.setColor(Color.parseColor("#8DB6CD"));
+        int xPos = Math.round(x + PADDING / 2);
+        int yPos = (int) ((top + bottom) / 2 - (paint.descent() + paint.ascent()) / 2);
+        canvas.drawText(text, start, end, xPos, yPos, paint);
+    }
+}

@@ -6,21 +6,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import me.yluo.testkeyboard.keboard.PanelViewRoot;
-import me.yluo.testkeyboard.keboard.SmileyInputRoot;
-import me.yluo.testkeyboard.keboard.util.KeyboardUtil;
+import me.yluo.testkeyboard.emotioninput.PanelViewRoot;
+import me.yluo.testkeyboard.emotioninput.SmileyInputRoot;
+import me.yluo.testkeyboard.emotioninput.util.KeyboardUtil;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "ResolvedActivity";
     private RecyclerView listView;
     private EditText mSendEdt;
     private PanelViewRoot mPanelRoot;
-    private ImageView smileyBtn;
+    private ImageView smileyBtn, sendBtn, btnMore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
         mSendEdt = (EditText) findViewById(R.id.ed_comment);
         SmileyInputRoot rootViewGroup = (SmileyInputRoot) findViewById(R.id.rootView);
         mPanelRoot = rootViewGroup.getmPanelLayout();
-        smileyBtn = (ImageView) findViewById(R.id.btn_first);
+        smileyBtn = (ImageView) findViewById(R.id.btn_emotion);
+        sendBtn = (ImageView) findViewById(R.id.btn_send);
+        btnMore = (ImageView) findViewById(R.id.btn_more);
 
         KeyboardUtil.attach(this, mPanelRoot, new KeyboardUtil.OnKeyboardShowingListener() {
             @Override
@@ -39,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mPanelRoot.init(mSendEdt, smileyBtn);
+        mPanelRoot.init(mSendEdt, smileyBtn, sendBtn);
+        mPanelRoot.setMoreView(LayoutInflater.from(this).inflate(R.layout.smiley_menu, null), btnMore);
 
         listView.setLayoutManager(new LinearLayoutManager(this));
 

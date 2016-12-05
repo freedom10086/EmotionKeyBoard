@@ -5,11 +5,11 @@
     android:layout_height="wrap_content"
     android:layout_above="@+id/smiley_view"
     android:background="#FAFAFA"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:gravity="bottom"
     android:orientation="horizontal"
-    android:padding="12dp"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:padding="12dp">
 
     <EditText
         android:id="@+id/ed_comment"
@@ -20,21 +20,29 @@
         android:hint="我也来说两句"
         android:inputType="textMultiLine"
         android:maxLines="4"
-        android:textSize="14sp" />
+        android:textSize="15sp" />
 
     <ImageView
-        android:id="@+id/btn_first"
+        android:id="@+id/btn_emotion"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="12dp"
         android:clickable="true"
-        android:src="@drawable/post_collect" />
+        android:src="@drawable/post_emojtion" />
 
     <ImageView
-        android:id="@+id/btn_second"
+        android:id="@+id/btn_more"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="12dp"
         android:clickable="true"
-        android:src="@drawable/post_comment_btn" />
+        android:src="@drawable/ic_add_black_24dp" />
+
+    <ImageView
+        android:id="@+id/btn_send"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="12dp"
+        android:clickable="true"
+        android:src="@drawable/btn_post" />
 </LinearLayout>
