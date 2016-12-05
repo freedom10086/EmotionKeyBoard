@@ -15,7 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-import me.yluo.testkeyboard.keboard.interfaces.IPanelHeightTarget;
+import me.yluo.testkeyboard.keboard.PanelViewGroup;
 
 public class KeyboardUtil {
 
@@ -84,7 +84,7 @@ public class KeyboardUtil {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public static ViewTreeObserver.OnGlobalLayoutListener attach(final Activity activity, IPanelHeightTarget target, OnKeyboardShowingListener listener) {
+    public static ViewTreeObserver.OnGlobalLayoutListener attach(final Activity activity, PanelViewGroup target, OnKeyboardShowingListener listener) {
         final ViewGroup contentView = (ViewGroup) activity.findViewById(android.R.id.content);
         final boolean isFullScreen = ViewUtil.isFullScreen(activity);
         final boolean isTranslucentStatus = ViewUtil.isTranslucentStatus(activity);
@@ -121,7 +121,7 @@ public class KeyboardUtil {
 
         private int previousDisplayHeight = 0;
         private final ViewGroup contentView;
-        private final IPanelHeightTarget panelHeightTarget;
+        private final PanelViewGroup panelHeightTarget;
         private final boolean isFullScreen;
         private final boolean isTranslucentStatus;
         private final boolean isFitSystemWindows;
@@ -134,7 +134,7 @@ public class KeyboardUtil {
 
         KeyboardStatusListener(boolean isFullScreen, boolean isTranslucentStatus,
                                boolean isFitSystemWindows,
-                               ViewGroup contentView, IPanelHeightTarget panelHeightTarget,
+                               ViewGroup contentView, PanelViewGroup panelHeightTarget,
                                OnKeyboardShowingListener listener, int screenHeight) {
             this.contentView = contentView;
             this.panelHeightTarget = panelHeightTarget;

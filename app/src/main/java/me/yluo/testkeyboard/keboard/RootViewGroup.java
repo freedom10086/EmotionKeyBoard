@@ -4,15 +4,16 @@ package me.yluo.testkeyboard.keboard;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import me.yluo.testkeyboard.keboard.interfaces.IPanelConflictLayout;
 import me.yluo.testkeyboard.keboard.util.DimmenUtils;
 import me.yluo.testkeyboard.keboard.util.StatusBarHeightUtil;
 import me.yluo.testkeyboard.keboard.util.ViewUtil;
@@ -22,7 +23,7 @@ public class RootViewGroup extends LinearLayout {
 
     private int mOldHeight = -1;
     private int mStatusBarHeight;
-    private IPanelConflictLayout mPanelLayout;
+    private PanelViewGroup mPanelLayout;
     private boolean mIsTranslucentStatus;
     private static final String TAG = "KPSRootLayoutHandler";
 
@@ -47,6 +48,12 @@ public class RootViewGroup extends LinearLayout {
         this.mStatusBarHeight = StatusBarHeightUtil.getStatusBarHeight(getContext());
         final Activity activity = (Activity) getContext();
         this.mIsTranslucentStatus = ViewUtil.isTranslucentStatus(activity);
+
+        mPanelLayout = new PanelViewGroup(activity);
+        mPanelLayout.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DimmenUtils.dip2px(activity, 200)));
+        mPanelLayout.setBackgroundColor(Color.parseColor("#fffefefe"));
+        mPanelLayout.setVisibility(GONE);
+        addView(mPanelLayout);
     }
 
     @Override
@@ -55,9 +62,27 @@ public class RootViewGroup extends LinearLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        // 记录总高度
+        int mTotalHeight = 0;
+        // 遍历所有子视图
+        int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View childView = getChildAt(i);
+            if (!(childView instanceof PanelViewGroup)) {
+                // 获取在onMeasure中计算的视图尺寸
+                int measureHeight = childView.getMeasuredHeight();
+                int measuredWidth = childView.getMeasuredWidth();
+                childView.layout(l, mTotalHeight, measuredWidth, mTotalHeight + measureHeight);
+                mTotalHeight += measureHeight;
+            }
+        }
 
-    //
-
+        if (mPanelLayout != null) {
+            mPanelLayout.layout(l, mTotalHeight, r, b);
+        }
+    }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void handleBeforeMeasure(final int width, int height) {
@@ -90,16 +115,12 @@ public class RootViewGroup extends LinearLayout {
 
         if (Math.abs(offset) == mStatusBarHeight) {
             Log.w(TAG, String.format("offset just equal statusBar height %d", offset));
-            // 极有可能是 相对本页面的二级页面的主题是全屏&是透明，但是本页面不是全屏，因此会有status bar的布局变化差异，进行调过
-            // 极有可能是 该布局采用了透明的背景(windowIsTranslucent=true)，而背后的布局`full screen`为false，
-            // 因此有可能第一次绘制时没有attach上status bar，而第二次status bar attach上去，导致了这个变化。
             return;
         }
 
         mOldHeight = height;
-        final IPanelConflictLayout panel = getPanelLayout(this);
 
-        if (panel == null) {
+        if (mPanelLayout == null) {
             Log.w(TAG, "can't find the valid panel conflict layout, give up!");
             return;
         }
@@ -112,40 +133,18 @@ public class RootViewGroup extends LinearLayout {
 
         if (offset > 0) {
             //键盘弹起 (offset > 0，高度变小)
-            panel.handleHide();
-        } else if (panel.isKeyboardShowing()) {
-            // 1. 总得来说，在监听到键盘已经显示的前提下，键盘收回才是有效有意义的。
-            // 2. 修复在Android L下使用V7.Theme.AppCompat主题，进入Activity，默认弹起面板bug，
-            // 第2点的bug出现原因:在Android L下使用V7.Theme.AppCompat主题，并且不使用系统的ActionBar/ToolBar，V7.Theme.AppCompat主题,还是会先默认绘制一帧默认ActionBar，然后再将他去掉（略无语）
+            mPanelLayout.handleHide();
+        } else if (mPanelLayout.isKeyboardShowing()) {
+            //在Android L下使用V7.Theme.AppCompat主题，并且不使用系统的ActionBar/ToolBar，V7.Theme.AppCompat主题,还是会先默认绘制一帧默认ActionBar，然后再将他去掉（略无语）
             //键盘收回 (offset < 0，高度变大)
-            if (panel.isVisible()) {
+            if (mPanelLayout.isVisible()) {
                 // the panel is showing/will showing
-                panel.handleShow();
+                mPanelLayout.handleShow();
             }
         }
     }
 
-
-    private IPanelConflictLayout getPanelLayout(final View view) {
-        if (mPanelLayout != null) {
-            return mPanelLayout;
-        }
-
-        if (view instanceof IPanelConflictLayout) {
-            mPanelLayout = (IPanelConflictLayout) view;
-            return mPanelLayout;
-        }
-
-        if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                IPanelConflictLayout v = getPanelLayout(((ViewGroup) view).getChildAt(i));
-                if (v != null) {
-                    mPanelLayout = v;
-                    return mPanelLayout;
-                }
-            }
-        }
-
-        return null;
+    public PanelViewGroup getmPanelLayout() {
+        return mPanelLayout;
     }
 }

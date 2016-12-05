@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import me.yluo.testkeyboard.keboard.PanelViewGroup;
+import me.yluo.testkeyboard.keboard.RootViewGroup;
 import me.yluo.testkeyboard.keboard.util.KPSwitchConflictUtil;
 import me.yluo.testkeyboard.keboard.util.KeyboardUtil;
 
@@ -36,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         listView = (RecyclerView) findViewById(R.id.list_view);
         mSendEdt = (EditText) findViewById(R.id.ed_comment);
-        mPanelRoot = (PanelViewGroup) findViewById(R.id.panel_root);
+        RootViewGroup rootViewGroup = (RootViewGroup) findViewById(R.id.rootView);
+        mPanelRoot = rootViewGroup.getmPanelLayout();
         smileyBtn = (ImageView) findViewById(R.id.btn_first);
 
         KeyboardUtil.attach(this, mPanelRoot, new KeyboardUtil.OnKeyboardShowingListener() {

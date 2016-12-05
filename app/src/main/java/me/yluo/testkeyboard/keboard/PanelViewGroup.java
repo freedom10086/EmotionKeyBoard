@@ -8,16 +8,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import me.yluo.testkeyboard.keboard.interfaces.IPanelConflictLayout;
-import me.yluo.testkeyboard.keboard.interfaces.IPanelHeightTarget;
 import me.yluo.testkeyboard.keboard.util.ViewUtil;
 
 
-public class PanelViewGroup extends FrameLayout implements IPanelHeightTarget,
-        IPanelConflictLayout {
+public class PanelViewGroup extends FrameLayout{
 
     private boolean mIsHide = false;
     private boolean mIsKeyboardShowing = false;
+    private SmileyView smileyView;
 
     public PanelViewGroup(Context context) {
         super(context);
@@ -36,20 +34,19 @@ public class PanelViewGroup extends FrameLayout implements IPanelHeightTarget,
     }
 
     private void init(final AttributeSet attrs) {
-
+        smileyView = new SmileyView(getContext());
+        smileyView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        addView(smileyView);
     }
 
-    @Override
     public void refreshHeight(int panelHeight) {
         ViewUtil.refreshHeight(this, panelHeight);
     }
 
-    @Override
     public void onKeyboardShowing(boolean showing) {
         mIsKeyboardShowing = showing;
     }
 
-    @Override
     public boolean isKeyboardShowing() {
         return mIsKeyboardShowing;
     }
@@ -69,19 +66,15 @@ public class PanelViewGroup extends FrameLayout implements IPanelHeightTarget,
         super.onMeasure(processedMeasureWHSpec[0], processedMeasureWHSpec[1]);
     }
 
-    @Override
     public boolean isVisible() {
         return !mIsHide;
     }
 
 
-    @Override
     public void handleShow() {
         super.setVisibility(View.VISIBLE);
     }
 
-
-    @Override
     public void handleHide() {
         this.mIsHide = true;
     }

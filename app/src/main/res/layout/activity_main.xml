@@ -14,17 +14,4 @@
 
     <include layout="@layout/input_bar" />
 
-
-    <me.yluo.testkeyboard.keboard.PanelViewGroup
-        android:id="@+id/panel_root"
-        style="@style/Panel"
-        android:visibility="gone">
-
-        <me.yluo.testkeyboard.keboard.SmileyView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-
-    </me.yluo.testkeyboard.keboard.PanelViewGroup>
-
 </me.yluo.testkeyboard.keboard.RootViewGroup>
