@@ -17,13 +17,13 @@ import me.yngluo.emotionkeyboard.utils.KeyboardUtil;
 
 public class SmileyContainer extends FrameLayout {
 
-    private boolean isKeyboardShowing;
+    boolean isVisible = false;
+    boolean isKeyboardShowing;
     private EmotionInputHandler handler;
-    private boolean isVisible = false;
     private SmileyView smileyView;
     private View moreView;
     private EditText editText;
-    private int keyboardHeight;
+
     private View moreViewBtn, sendBtn;
     private Paint paint = new Paint();
 
@@ -91,8 +91,8 @@ public class SmileyContainer extends FrameLayout {
         smileyBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("smileyBtn", "click");
                 smileyView.setVisibility(VISIBLE);
+                if(moreView!=null) moreView.setVisibility(GONE);
                 showContainer();
             }
         });
@@ -108,28 +108,16 @@ public class SmileyContainer extends FrameLayout {
         moreViewBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (SmileyContainer.this.getVisibility() == View.VISIBLE) {
-                    if (moreView.getVisibility() != VISIBLE) {
-                        moreView.setVisibility(VISIBLE);
-                        smileyView.setVisibility(GONE);
-                    } else {
-                        KeyboardUtil.showKeyboard(editText);
-                    }
-                } else {
-                    moreView.setVisibility(VISIBLE);
-                    smileyView.setVisibility(GONE);
-                    setVisibility(VISIBLE);
-                }
+
             }
         });
     }
 
     private void showContainer() {
+        if(isVisible) return;
         isVisible = true;
-        if (isKeyboardShowing && getVisibility() == GONE) {
-            KeyboardUtil.hideKeyboard(editText);
-            setVisibility(VISIBLE);
-        } else if (!isKeyboardShowing && getVisibility() == GONE) {
+        if(isKeyboardShowing) KeyboardUtil.hideKeyboard(editText);
+        if(getVisibility()==GONE){
             setVisibility(VISIBLE);
         }
     }

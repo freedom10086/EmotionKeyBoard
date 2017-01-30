@@ -15,6 +15,7 @@ public class SmileyInputRoot extends LinearLayout {
 
     private int mOldHeight = -1;
     private SmileyContainer mSmileyContainer;
+    private int maxHeight = 100;
 
 
     public SmileyInputRoot(Context context) {
@@ -48,6 +49,10 @@ public class SmileyInputRoot extends LinearLayout {
 
         Log.e("root onMeasure", "height is:" + height);
 
+        if (height > maxHeight) {
+            maxHeight = height;
+        }
+
         if (height < 200 && mOldHeight == height) {
             return;
         }
@@ -74,6 +79,14 @@ public class SmileyInputRoot extends LinearLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         Log.e("=========", changed + "||" + t + "||" + b);
+
+        if (!changed
+                && (maxHeight > (b - t))
+                && mSmileyContainer.isVisible
+                && mSmileyContainer.isKeyboardShowing) {
+            Log.e("=========", "return");
+            return;
+        }
         int childTop = 0;
         // 遍历所有子视图
         int childCount = getChildCount();
