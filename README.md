@@ -2,7 +2,7 @@
 Android 带表情评论框，支持emoji,图片,自定义菜单view
 
 ## 使用说名
-1. 布局以`SmileyInputRoot`为主布局
+布局以`SmileyInputRoot`为主布局
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -19,7 +19,7 @@ Android 带表情评论框，支持emoji,图片,自定义菜单view
 
 </me.yngluo.emotionkeyboard.emotioninput.SmileyInputRoot>
 ```
-2. Activity设置相关点击事件
+Activity设置相关点击事件
 
 ```java
 SmileyInputRoot rootViewGroup = (SmileyInputRoot) findViewById(R.id.root);
@@ -35,12 +35,12 @@ KeyboardUtil.attach(this, mPanelRoot, new KeyboardUtil.OnKeyboardShowingListener
 
 mPanelRoot.init(input, smileyBtn, btnSend);
 ```
-3. 设置菜单view[可选],传入自定义view如`my_smiley_menu`
+设置菜单view[可选],传入自定义view如`my_smiley_menu`
 
 ```java
 mPanelRoot.setMoreView(LayoutInflater.from(this).inflate(R.layout.my_smiley_menu, null), btnMore);
 ```
-4. 自定义表情
+自定义表情
 修改`array.xml`按照格式添加你的表情,表情文件放在`asserts/smiley`目录,再修改`SmileyView`文件如下例
 
 ```java
@@ -58,13 +58,8 @@ smileys.add(setYwz);
 setSmileys(smileys);
 ```
 ## 软件截图
-![image](https://github.com/freedom10086/Ruisi/blob/master/screenshots/1.jpg)
-![image](https://github.com/freedom10086/Ruisi/blob/master/screenshots/2.jpg)
-![image](https://github.com/freedom10086/Ruisi/blob/master/screenshots/3.jpg)
-![image](https://github.com/freedom10086/Ruisi/blob/master/screenshots/4.jpg)
-![image](https://github.com/freedom10086/Ruisi/blob/master/screenshots/5.jpg)
-![image](https://github.com/freedom10086/Ruisi/blob/master/screenshots/6.jpg)
 
+暂无  
 ## 意见和反馈
 - freedom10086 <yangluo.chn@gmail.com>
 
