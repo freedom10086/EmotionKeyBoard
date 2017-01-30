@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="default_bg">#ebebeb</color>
-    <color name="chatting_list_bg">@color/default_bg</color>
+    <color name="bg_primary">#ffFeFeFe</color>
+    <color name="colorDivider">#1f000000</color>
+    <color name="bg_click">#0ff5f5f5</color>
+    <color name="bg_select">#e0d2d2d2</color>
 </resources>

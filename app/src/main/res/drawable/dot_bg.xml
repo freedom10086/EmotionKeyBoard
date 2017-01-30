@@ -2,13 +2,13 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_enabled="true">
         <shape android:shape="oval">
-            <size android:width="6dp" android:height="6dp" />
+            <size android:width="4dp" android:height="4dp" />
             <solid android:color="#8dbfD0" />
         </shape>
     </item>
     <item android:state_enabled="false">
         <shape android:shape="oval">
-            <size android:width="6dp" android:height="6dp" />
+            <size android:width="4dp" android:height="4dp" />
             <solid android:color="#ebebeb" />
         </shape>
     </item>

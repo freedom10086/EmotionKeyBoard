@@ -218,7 +218,6 @@
         <item>acn/acn003.png,{:15_939:}</item>
         <item>acn/acn029.png,{:15_940:}</item>
         <item>acn/acn040.png,{:15_941:}</item>
-        <item>acn/acn023.png,{:15_942:}</item>
         <item>acn/acn058.png,{:15_943:}</item>
         <item>acn/acn042.png,{:15_944:}</item>
         <item>acn/acn067.png,{:15_945:}</item>
@@ -240,61 +239,31 @@
     </string-array>
 
     <string-array name="smiley_ywz">
-        <item>(๑‾ ꇴ ‾๑)</item>
         <item>๑乛◡乛๑</item>
         <item>(/ω·＼*)</item>
         <item>(๑⁼̴̀д⁼̴́๑)</item>
         <item>(๑•॒̀ ູ॒•́๑)</item>
-        <item>(づ￣³￣)づ</item>
         <item>("▔□▔)</item>
         <item>( ꒪Д꒪)</item>
         <item>( ･᷄д･᷅ )</item>
-        <item>(  ˃᷄˶˶̫˶˂᷅  )</item>
         <item>눈_눈</item>
         <item>Ծ‸Ծ</item>
-        <item>(๑˙ー˙๑)</item>
-        <item>( ´･ᴗ･` )</item>
-        <item>٩(˃̶͈̀௰˂̶͈́)و</item>
         <item>(⺣◡⺣)♡</item>
-        <item>(=￣ω￣=)</item>
-        <item>ԅ( ¯་། ¯ԅ)</item>
-        <item>◝( ˙ ꒳ ˙ )◜</item>
-        <item>(っ˘̩╭╮˘̩)っ</item>
-        <item>(⁍̥̥̥᷄д⁍̥̥̥᷅ ू )</item>
-        <item>( ・᷄ ᵌ・᷅ )</item>
         <item>(ಥ_ಥ)</item>
         <item>(◕‿◕✿)</item>
-        <item>╮(￣⊿￣”)╭</item>
         <item>(⌒▽⌒)</item>
-        <item>（￣▽￣）</item>
-        <item>(=・ω・=)</item>
-        <item>(｀・ω・´)</item>
-        <item>(〜￣△￣)〜</item>
         <item>(･∀･)</item>
         <item>(°∀°)ﾉ</item>
         <item>(￣3￣)</item>
-        <item>╮(￣▽￣)╭</item>
-        <item>( ´_ゝ｀)</item>
         <item>←_←</item>
         <item>→_→</item>
         <item>(;¬_¬)</item>
-        <item>("▔□▔)/</item>
-        <item>(ﾟДﾟ≡ﾟдﾟ)!?</item>
         <item>Σ(ﾟдﾟ;)</item>
-        <item>Σ( ￣□￣||)</item>
-        <item>(´；ω；`)</item>
         <item>（/TДT)/</item>
-        <item>(^・ω・^ )</item>
         <item>(｡･ω･｡)</item>
-        <item>(●￣(ｴ)￣●)</item>
-        <item>ε=ε=(ノ≧∇≦)ノ</item>
         <item>(´･_･`)</item>
         <item>(-_-#)</item>
-        <item>（￣へ￣）</item>
-        <item>(￣ε(#￣) Σ</item>
         <item>ヽ(`Д´)ﾉ</item>
-        <item>(╯°口°)╯(┴—┴</item>
-        <item>（#-_-)┯━┯</item>
-        <item>_(:3」∠)_</item>
     </string-array>
+
 </resources>

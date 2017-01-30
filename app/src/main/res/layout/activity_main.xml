@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<me.yluo.testkeyboard.emotioninput.SmileyInputRoot xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rootView"
+<me.yngluo.emotionkeyboard.emotioninput.SmileyInputRoot xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_view"
+    <ListView
+        android:id="@+id/topic_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.0"
-        android:background="@color/chatting_list_bg" />
+        android:layout_weight="1" />
 
-    <include layout="@layout/input_bar" />
 
-</me.yluo.testkeyboard.emotioninput.SmileyInputRoot>
+    <include layout="@layout/my_input_bar" />
+
+</me.yngluo.emotionkeyboard.emotioninput.SmileyInputRoot>
