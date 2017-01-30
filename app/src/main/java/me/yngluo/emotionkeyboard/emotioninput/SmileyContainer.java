@@ -23,6 +23,7 @@ public class SmileyContainer extends FrameLayout {
     private SmileyView smileyView;
     private View moreView;
     private EditText editText;
+    private int savedHeight = 0;
 
     private View moreViewBtn, sendBtn;
     private Paint paint = new Paint();
@@ -33,15 +34,17 @@ public class SmileyContainer extends FrameLayout {
     }
 
     private void init() {
+        savedHeight = KeyBoardHeightPreference.get(getContext(), 200);
         setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                DimmenUtils.dip2px(getContext(), 200)));
+                LinearLayout.LayoutParams.MATCH_PARENT, savedHeight));
         paint.setColor(Color.parseColor("#d5d3d5"));
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(1.0f);
 
         smileyView = new SmileyView(getContext());
-        smileyView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        smileyView.setLayoutParams(new LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT));
         addView(smileyView);
     }
 
@@ -92,7 +95,7 @@ public class SmileyContainer extends FrameLayout {
             @Override
             public void onClick(View v) {
                 smileyView.setVisibility(VISIBLE);
-                if(moreView!=null) moreView.setVisibility(GONE);
+                if (moreView != null) moreView.setVisibility(GONE);
                 showContainer();
             }
         });
@@ -114,10 +117,10 @@ public class SmileyContainer extends FrameLayout {
     }
 
     private void showContainer() {
-        if(isVisible) return;
+        if (isVisible) return;
         isVisible = true;
-        if(isKeyboardShowing) KeyboardUtil.hideKeyboard(editText);
-        if(getVisibility()==GONE){
+        if (isKeyboardShowing) KeyboardUtil.hideKeyboard(editText);
+        if (getVisibility() == GONE) {
             setVisibility(VISIBLE);
         }
     }
@@ -131,9 +134,13 @@ public class SmileyContainer extends FrameLayout {
         Log.e("onMainViewSizeChange", "offset is visible:" + offset + " visible:" + getVisibility());
         if (offset > 0) {
             this.isKeyboardShowing = true;
+            if (offset != savedHeight) {
+                KeyBoardHeightPreference.save(getContext(), offset);
+                savedHeight = offset;
+                setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, offset));
+            }
             hideContainer();
-            setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, offset));
         } else if (offset < 0) {
             Log.e("______", "keyboard hide :" + offset);
             this.isKeyboardShowing = false;

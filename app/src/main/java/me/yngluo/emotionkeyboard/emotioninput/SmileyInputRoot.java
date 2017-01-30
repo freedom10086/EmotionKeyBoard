@@ -110,7 +110,6 @@ public class SmileyInputRoot extends LinearLayout {
         }
 
         if (mSmileyContainer != null && mSmileyContainer.getVisibility() != GONE) {
-            Log.e("onLayout", "mSmileyContainer layout");
             mSmileyContainer.layout(l, childTop, r, b);
         }
     }

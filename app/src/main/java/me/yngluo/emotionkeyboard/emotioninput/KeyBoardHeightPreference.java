@@ -1,7 +1,9 @@
-package me.yngluo.emotionkeyboard.utils;
+package me.yngluo.emotionkeyboard.emotioninput;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import me.yngluo.emotionkeyboard.utils.DimmenUtils;
 
 
 /**
@@ -31,7 +33,8 @@ class KeyBoardHeightPreference {
         return SP;
     }
 
-    public static int get(final Context context, final int defaultHeight) {
+    public static int get(final Context context, int defaultHeight) {
+        defaultHeight = DimmenUtils.dip2px(context, defaultHeight);
         return with(context).getInt(KEY_KEYBOARD_HEIGHT, defaultHeight);
     }
 
