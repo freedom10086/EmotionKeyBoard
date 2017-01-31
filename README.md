@@ -1,5 +1,13 @@
 # EmotionKeyBoard
-Android 带表情评论框，支持emoji,图片,自定义菜单view，根据软键盘高度自动调整
+Android 带表情评论框，支持emoji,图片,自定义菜单view,根据软键盘高度自动调整
+
+## 软件截图
+![image](https://github.com/freedom10086/EmotionKeyBoard/blob/master/art/1.jpg)
+![image](https://github.com/freedom10086/EmotionKeyBoard/blob/master/art/2.jpg)
+![image](https://github.com/freedom10086/EmotionKeyBoard/blob/master/art/3.jpg)
+![image](https://github.com/freedom10086/EmotionKeyBoard/blob/master/art/4.jpg)
+![image](https://github.com/freedom10086/EmotionKeyBoard/blob/master/art/5.jpg)
+
 
 ## 使用说名
 布局以`SmileyInputRoot`为主布局
@@ -35,7 +43,7 @@ KeyboardUtil.attach(this, mPanelRoot, new KeyboardUtil.OnKeyboardShowingListener
 
 mPanelRoot.init(input, smileyBtn, btnSend);
 ```
-设置菜单view[可选],传入自定义view如`my_smiley_menu`
+[可选]设置菜单view,传入自定义view如`my_smiley_menu`
 
 ```java
 mPanelRoot.setMoreView(LayoutInflater.from(this).inflate(R.layout.my_smiley_menu, null), btnMore);
@@ -57,14 +65,7 @@ smileys.add(SmileyEmoji.getEmojis());
 smileys.add(setYwz);
 setSmileys(smileys);
 ```
-## 软件截图
-![image](https://github.com/freedom10086/EmotionKeyBoard/blob/master/art/1.jpg)
-![image](https://github.com/freedom10086/EmotionKeyBoard/blob/master/art/2.jpg)
-![image](https://github.com/freedom10086/EmotionKeyBoard/blob/master/art/3.jpg)
-![image](https://github.com/freedom10086/EmotionKeyBoard/blob/master/art/4.jpg)
-![image](https://github.com/freedom10086/EmotionKeyBoard/blob/master/art/5.jpg)
 
-暂无  
 ## 意见和反馈
 - freedom10086 <yangluo.chn@gmail.com>
 
