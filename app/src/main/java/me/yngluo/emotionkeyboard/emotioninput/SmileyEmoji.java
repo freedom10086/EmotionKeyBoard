@@ -214,7 +214,7 @@ public class SmileyEmoji {
     };
 
     public static SmileyDataSet getEmojis() {
-        SmileyDataSet set = new SmileyDataSet("emoji", false);
+        SmileyDataSet set = new SmileyDataSet("emoji", SmileyDataSet.TYPE_EMOJI);
         List<Pair<String, String>> smileys = new ArrayList<>();
         for (String a : DATA) {
             smileys.add(new Pair<>(a, a));

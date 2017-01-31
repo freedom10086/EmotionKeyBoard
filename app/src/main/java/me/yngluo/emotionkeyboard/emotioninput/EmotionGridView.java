@@ -2,15 +2,10 @@ package me.yngluo.emotionkeyboard.emotioninput;
 
 import android.content.Context;
 import android.util.Log;
-import android.util.Pair;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 
 public class EmotionGridView extends ViewGroup implements View.OnClickListener {
@@ -21,7 +16,6 @@ public class EmotionGridView extends ViewGroup implements View.OnClickListener {
     private SmileyDataSet set;
     private int startIndex;
     private EmotionInputHandler handler;
-    private static final int TAG_INDEX = 0x7f056666;
 
     public EmotionGridView(Context context,
                            SmileyDataSet set,
@@ -65,27 +59,10 @@ public class EmotionGridView extends ViewGroup implements View.OnClickListener {
 
         LayoutParams lp = new LayoutParams(itemWidth, itemHeight);
         for (int i = startIndex; i < set.getCount() && ((i - startIndex) < colNum * rowNum); i++) {
-            Pair<String, String> d = set.getSmileys().get(i);
-            View v;
-            if (set.isImage()) {
-                v = new ImageView(context);
-                v.setPadding(marginLR, marginTB, marginLR, marginTB);
-                Picasso.with(context).load(d.first)
-                        .resize(size, size)
-                        .into((ImageView) v);
-            } else {
-                v = new TextView(context);
-                ((TextView) v).setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                //v.setTextAlignment(TEXT_ALIGNMENT_CENTER);
-                ((TextView) v).setGravity(Gravity.CENTER);
-                ((TextView) v).setText(d.first);
-                v.setPadding(marginLR / 2, marginTB, marginLR / 2, marginTB);
-            }
-            v.setTag(TAG_INDEX, d.second);
-            v.setClickable(true);
-            v.setOnClickListener(this);
-            addView(v, lp);
-
+            View view = set.getSmileyItem(context, i, size);
+            view.setPadding(marginLR, marginTB, marginLR, marginTB);
+            view.setOnClickListener(this);
+            addView(view, lp);
         }
 
         invalidate();
@@ -110,7 +87,8 @@ public class EmotionGridView extends ViewGroup implements View.OnClickListener {
     public void onClick(View view) {
         if (view instanceof ImageView) {
             ImageView v = (ImageView) view;
-            handler.insertSmiley((String) v.getTag(TAG_INDEX), v.getDrawable());
+            handler.insertSmiley((String) v.getTag(SmileyDataSet.TAG_INDEX),
+                    v.getDrawable());
         } else if (view instanceof TextView) {
             TextView v = (TextView) view;
             handler.insertString(v.getText().toString());

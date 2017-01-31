@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import me.yngluo.emotionkeyboard.utils.DimmenUtils;
@@ -42,12 +43,30 @@ public class SmileyInputRoot extends LinearLayout {
         addView(mSmileyContainer);
     }
 
+    public void initSmiley(EditText editText, View smileyBtn, final View sendBtn) {
+        mSmileyContainer.init(editText, smileyBtn, sendBtn);
+    }
+
+    public void setMoreView(View moreViewIn, View moreBtn) {
+        mSmileyContainer.setMoreView(moreViewIn, moreBtn);
+    }
+
+    //return is handled
+    public boolean onActivityBackClick() {
+        if (mSmileyContainer.getVisibility() == VISIBLE) {
+            mSmileyContainer.hideContainer(false);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
-        Log.e("root onMeasure", "height is:" + height);
+        Log.d("root onMeasure", "height is:" + height);
 
         if (height > maxHeight) {
             maxHeight = height;
@@ -78,7 +97,7 @@ public class SmileyInputRoot extends LinearLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        Log.e("=========", changed + "||" + t + "||" + b);
+        //Log.e("=========", changed + "||" + t + "||" + b);
 
         if (!changed
                 && (maxHeight > (b - t))
@@ -112,10 +131,5 @@ public class SmileyInputRoot extends LinearLayout {
         if (mSmileyContainer != null && mSmileyContainer.getVisibility() != GONE) {
             mSmileyContainer.layout(l, childTop, r, b);
         }
-    }
-
-
-    public SmileyContainer getmSmileyContainer() {
-        return mSmileyContainer;
     }
 }

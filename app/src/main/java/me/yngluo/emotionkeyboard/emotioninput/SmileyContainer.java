@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import me.yngluo.emotionkeyboard.utils.DimmenUtils;
 import me.yngluo.emotionkeyboard.utils.KeyboardUtil;
 
 
@@ -19,7 +18,6 @@ public class SmileyContainer extends FrameLayout {
 
     boolean isVisible = false;
     boolean isKeyboardShowing;
-    private EmotionInputHandler handler;
     private SmileyView smileyView;
     private View moreView;
     private EditText editText;
@@ -51,7 +49,7 @@ public class SmileyContainer extends FrameLayout {
     public void init(EditText editText, View smileyBtn, final View sendBtn) {
         sendBtn.setEnabled(false);
         this.sendBtn = sendBtn;
-        handler = new EmotionInputHandler(editText, new EmotionInputHandler.TextChangeListener() {
+        EmotionInputHandler handler = new EmotionInputHandler(editText, new EmotionInputHandler.TextChangeListener() {
             @Override
             public void onTextChange(boolean enable, String s) {
                 sendBtn.setEnabled(enable);
@@ -72,7 +70,7 @@ public class SmileyContainer extends FrameLayout {
         editText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideContainer();
+                hideContainer(true);
             }
         });
         this.editText = editText;
@@ -94,29 +92,52 @@ public class SmileyContainer extends FrameLayout {
         smileyBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                smileyView.setVisibility(VISIBLE);
-                if (moreView != null) moreView.setVisibility(GONE);
-                showContainer();
+                if (getVisibility() != VISIBLE) {
+                    smileyView.setVisibility(VISIBLE);
+                    if (moreView != null) moreView.setVisibility(GONE);
+                    showContainer();
+                } else {
+                    if (smileyView.getVisibility() == VISIBLE) {
+                        hideContainer(true);
+                        KeyboardUtil.showKeyboard(editText);
+                    } else {
+                        smileyView.setVisibility(VISIBLE);
+                        if (moreView != null) moreView.setVisibility(GONE);
+                    }
+                }
             }
         });
     }
 
-    public void setMoreView(View panelView, View moreBtn) {
-        moreView = panelView;
+    public void setMoreView(View moreViewIn, View moreBtn) {
+        this.moreView = moreViewIn;
         this.sendBtn.setVisibility(GONE);
-        addView(moreView);
+        addView(this.moreView);
         this.moreViewBtn = moreBtn;
         this.moreViewBtn.setVisibility(VISIBLE);
         this.sendBtn.setVisibility(GONE);
+
         moreViewBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (getVisibility() != VISIBLE) {
+                    moreView.setVisibility(VISIBLE);
+                    smileyView.setVisibility(GONE);
+                    showContainer();
+                } else {
+                    if (moreView.getVisibility() == VISIBLE) {
+                        hideContainer(true);
+                        KeyboardUtil.showKeyboard(editText);
+                    } else {
+                        moreView.setVisibility(VISIBLE);
+                        smileyView.setVisibility(GONE);
+                    }
+                }
             }
         });
     }
 
-    private void showContainer() {
+    public void showContainer() {
         if (isVisible) return;
         isVisible = true;
         if (isKeyboardShowing) KeyboardUtil.hideKeyboard(editText);
@@ -125,14 +146,21 @@ public class SmileyContainer extends FrameLayout {
         }
     }
 
-    private void hideContainer() {
+
+
+    //参数代表是否由键盘弹起
+    public void hideContainer(boolean isCauseByKeyboard) {
         isVisible = false;
+        if (!isCauseByKeyboard) {
+            setVisibility(GONE);
+        }
     }
+
 
     //offset > 0 可能时键盘弹起
     void onMainViewSizeChange(int offset) {
-        Log.e("onMainViewSizeChange", "offset is visible:" + offset + " visible:" + getVisibility());
-        if (offset > 0) {
+        if (offset > 0) {//键盘弹起
+            isVisible = false;
             this.isKeyboardShowing = true;
             if (offset != savedHeight) {
                 KeyBoardHeightPreference.save(getContext(), offset);
@@ -140,7 +168,7 @@ public class SmileyContainer extends FrameLayout {
                 setLayoutParams(new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, offset));
             }
-            hideContainer();
+            hideContainer(true);
         } else if (offset < 0) {
             Log.e("______", "keyboard hide :" + offset);
             this.isKeyboardShowing = false;

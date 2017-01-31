@@ -2,18 +2,18 @@ package me.yngluo.emotionkeyboard;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import me.yngluo.emotionkeyboard.emotioninput.SmileyContainer;
 import me.yngluo.emotionkeyboard.emotioninput.SmileyInputRoot;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
-    private SmileyContainer mPanelRoot;
-
+    private SmileyInputRoot rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +29,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         View btnMore = findViewById(R.id.btn_more);
         View btnSend = findViewById(R.id.btn_send);
         btnSend.setOnClickListener(this);
-        SmileyInputRoot rootViewGroup = (SmileyInputRoot) findViewById(R.id.root);
-        mPanelRoot = rootViewGroup.getmSmileyContainer();
+        rootView = (SmileyInputRoot) findViewById(R.id.root);
 
-
-        mPanelRoot.init(input, smileyBtn, btnSend);
+        rootView.initSmiley(input, smileyBtn, btnSend);
 
         /**
          * 设置more view 默认不显示
          */
-        mPanelRoot.setMoreView(LayoutInflater.from(this).inflate(R.layout.my_smiley_menu, null), btnMore);
+        rootView.setMoreView(LayoutInflater.from(this).inflate(R.layout.my_smiley_menu, null), btnMore);
         findViewById(R.id.btn_star).setOnClickListener(this);
         findViewById(R.id.btn_link).setOnClickListener(this);
         findViewById(R.id.btn_share).setOnClickListener(this);
@@ -67,12 +65,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onBackPressed() {
-        if (mPanelRoot.getVisibility() == View.VISIBLE) {
-            //mPanelRoot.hidePanelAndKeyboard();
-        } else {
+        if (!rootView.onActivityBackClick()) {
             super.onBackPressed();
         }
     }
-
-
 }

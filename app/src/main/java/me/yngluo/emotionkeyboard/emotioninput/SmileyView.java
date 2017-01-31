@@ -114,14 +114,12 @@ public class SmileyView extends LinearLayout
 
             adapter = new PageAdapter();
             List<SmileyDataSet> smileys = new ArrayList<>();
-            SmileyDataSet setTieba = SmileyDataSet.getDataSet(context, "贴吧", true, R.array.smiley_tieba);
-            SmileyDataSet setAcn = SmileyDataSet.getDataSet(context, "ac娘", true, R.array.smiley_acn);
-            SmileyDataSet setJgz = SmileyDataSet.getDataSet(context, "金馆长", true, R.array.smiley_jgz);
-            SmileyDataSet setYwz = SmileyDataSet.getDataSet(context, "颜文字", false, R.array.smiley_ywz);
+            SmileyDataSet setTieba = SmileyDataSet.getDataSet(context, "贴吧", SmileyDataSet.TYPE_IMAGE, R.array.smiley_tieba);
+            SmileyDataSet setAcn = SmileyDataSet.getDataSet(context, "ac娘", SmileyDataSet.TYPE_IMAGE, R.array.smiley_acn);
+            SmileyDataSet setYwz = SmileyDataSet.getDataSet(context, "颜文字", SmileyDataSet.TYPE_TEXT, R.array.smiley_ywz);
 
             smileys.add(setTieba);
             smileys.add(setAcn);
-            smileys.add(setJgz);
             smileys.add(SmileyEmoji.getEmojis());
             smileys.add(setYwz);
             setSmileys(smileys);
