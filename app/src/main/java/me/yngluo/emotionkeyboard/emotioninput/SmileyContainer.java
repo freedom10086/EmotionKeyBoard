@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -67,13 +68,15 @@ public class SmileyContainer extends FrameLayout {
 
         smileyView.setInputView(handler);
 
-        editText.setOnClickListener(new OnClickListener() {
+
+        this.editText = editText;
+        this.editText.setOnTouchListener(new OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
                 hideContainer(true);
+                return false;
             }
         });
-        this.editText = editText;
         setSmileyView(smileyBtn);
     }
 
@@ -145,7 +148,6 @@ public class SmileyContainer extends FrameLayout {
             setVisibility(VISIBLE);
         }
     }
-
 
 
     //参数代表是否由键盘弹起

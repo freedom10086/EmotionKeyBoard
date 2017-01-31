@@ -98,6 +98,7 @@ public class SmileyInputRoot extends LinearLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         //Log.e("=========", changed + "||" + t + "||" + b);
+        //Log.e("=========", mSmileyContainer.isVisible + "||" + mSmileyContainer.isKeyboardShowing);
 
         if (!changed
                 && (maxHeight > (b - t))
