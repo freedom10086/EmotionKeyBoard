@@ -1,5 +1,5 @@
 # EmotionKeyBoard
-Android 带表情评论框，支持emoji,图片,自定义菜单view
+Android 带表情评论框，支持emoji,图片,自定义菜单view，根据软键盘高度自动调整
 
 ## 使用说名
 布局以`SmileyInputRoot`为主布局
@@ -58,6 +58,11 @@ smileys.add(setYwz);
 setSmileys(smileys);
 ```
 ## 软件截图
+![image](https://github.com/freedom10086/EmotionKeyBoard/blob/master/art/1.jpg)
+![image](https://github.com/freedom10086/EmotionKeyBoard/blob/master/art/2.jpg)
+![image](https://github.com/freedom10086/EmotionKeyBoard/blob/master/art/3.jpg)
+![image](https://github.com/freedom10086/EmotionKeyBoard/blob/master/art/4.jpg)
+![image](https://github.com/freedom10086/EmotionKeyBoard/blob/master/art/5.jpg)
 
 暂无  
 ## 意见和反馈
